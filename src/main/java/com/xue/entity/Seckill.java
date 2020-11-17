@@ -3,16 +3,16 @@ package com.xue.entity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
-public class Seckill {
+public class Seckill implements Serializable {
     @Id
-    private long seckill_id;
+    private long seckillId;
     private String name;
-    private Integer number;
+    private int number;
     private Timestamp start_time;
     private Timestamp end_time;
     private Timestamp create_time;
-    private Integer version;
 }

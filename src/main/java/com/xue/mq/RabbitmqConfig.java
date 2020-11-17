@@ -7,7 +7,6 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
@@ -29,44 +28,6 @@ public class RabbitmqConfig {
 
     @Resource
     private SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer;
-
-
-    /**
-     * 声明订单队列的交换机
-     *
-     * @return
-     */
-    @Bean
-    public TopicExchange SucTopicExchange() {
-        //设置为持久化 不自动删除
-        return new TopicExchange(env.getProperty("mq.success.kill.queue.name"), true, false);
-    }
-
-    /**
-     * 声明订单队列
-     *
-     * @return
-     */
-    @Bean
-    public Queue SucQueue() {
-        return new Queue(env.getProperty("mq.success.kill.queue.exchange"), true);
-    }
-
-    /**
-     * 将队列绑定到交换机
-     *
-     * @return
-     */
-    @Bean
-    public Binding SucBinding() {
-        return BindingBuilder.bind(SucQueue()).to(SucTopicExchange()).with(env.getProperty("mq.success.kill.queue.routing.key"));
-    }
-
-    /**
-     * 注入订单队列消费监听器
-     */
-    @Resource
-    private SucListener sucListener;
 
     /**
      * 声明订单队列监听器配置容器

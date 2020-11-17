@@ -1,13 +1,14 @@
 package com.xue.service;
 
+import com.xue.entity.Seckill;
 import com.xue.entity.SuccessKill;
 
 public interface CheckService {
     /**
      * 检验用户
-     * @param order
+     * @param seckillId
      * @return
      */
-    public boolean CheckSeckillUser(SuccessKill order);
+    //public boolean CheckSeckillUser(Long seckillId);
 
 }

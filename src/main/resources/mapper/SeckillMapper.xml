@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xue.mapper.SeckillMapper">
+    <resultMap id="all" type="com.xue.entity.Seckill">
+        <id column="seckill_id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="number" property="number"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
+        <result column="create_time" property="create_time"/>
+    </resultMap>
+
+    <select id="findById" resultType="com.xue.entity.Seckill">
+       select * from seckill where seckill_id = #{id}
+    </select>
+
+    <select id="getAll" resultMap="all">
+      select name,number,start_time,end_time from seckill
+  </select>
+
+    <update id="updateNumber" parameterType="Long">
+    update seckill set number = number -1 where number > 0 and seckill_id= #{serckillId}
+  </update>
+
+    <select id="getCount" resultType="Long">
+        select number from seckill where seckill_id=#{serckillId}
+    </select>
+</mapper>

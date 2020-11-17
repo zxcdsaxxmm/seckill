@@ -19,10 +19,10 @@ public class CheckServiceImpl implements CheckService {
     /**
      * 用户检验：保证每个用户只能抢购一次
      */
-    @Override
-    public boolean CheckSeckillUser(SuccessKill order) {
+   /* @Override
+    public boolean CheckSeckillUser(Long seckillId) {
         String key = env.getProperty("seckill.redis.key.prefix") + order.getUserId() + order.getSeckillId();
         return redisTemplate.opsForValue().setIfAbsent(key, "1");
-    }
+    }*/
 
 }

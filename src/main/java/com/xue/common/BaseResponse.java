@@ -1,6 +1,8 @@
 package com.xue.common;
 
-public class BaseResponse<T> {
+import java.util.HashMap;
+
+public class BaseResponse<T> extends HashMap<Integer, String> {
     private Integer code; //状态码code
     private String msg;  //状态码对应的描述信息msg
     private T data; //响应数据

@@ -4,16 +4,15 @@ import com.xue.common.BaseResponse;
 import com.xue.common.Result;
 import com.xue.entity.Seckill;
 import com.xue.entity.SuccessKill;
-import com.xue.service.CheckService;
 import com.xue.service.SeckillService;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -21,19 +20,25 @@ import java.util.List;
 public class SeckillController {
 
     private final static Logger logger = LoggerFactory.getLogger(SeckillController.class);
+
     @Resource
     private SeckillService seckillService;
 
     @Resource
-    private CheckService checkService;
+    private RedisTemplate redisTemplate;
 
     @GetMapping("/getAll")
     public List<Seckill> getAll() {
         return seckillService.getAll();
     }
 
-    @GetMapping("/query")
-    public Seckill query(@RequestParam Long id) {
+    @GetMapping("getNumber/{id}")
+    public Long getNum(@PathVariable long id) {
+        return seckillService.getNumber(id);
+    }
+
+    @GetMapping("/query/{id}")
+    public Seckill query(@PathVariable Long id) {
         return seckillService.findById(id);
     }
 
@@ -43,20 +48,16 @@ public class SeckillController {
     }
 
     @PostMapping("/startSeckill")
-    public BaseResponse startSecondkill(HttpSession session, @RequestBody SuccessKill order) {
-        // session.getAttribute("order");
-        BaseResponse baseResponse = new BaseResponse(Result.Success);
-        try {
-            //判断该用户是否首次秒杀该商品
-            if (checkService.CheckSeckillUser(order)) {
-                seckillService.seckill(order);
-
-            }
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            baseResponse = new BaseResponse(Result.Fail);
+    public BaseResponse startSecondkill(@Param("seckill_Id") long seckillId,
+                                        @Param("user_Id") long userId,
+                                        @Param("state") int state) throws Exception {
+        long num = seckillService.getNumber(seckillId);
+        if (num <= 0) {
+            return new BaseResponse(500,"秒杀结束!");
+        } else {
+            BaseResponse response = seckillService.startKill(seckillId, userId, state);
+            return response;
         }
-        return baseResponse;
     }
 }
 

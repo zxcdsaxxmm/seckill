@@ -4,6 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xue.mapper.SuckillMapper">
    <insert id="insertRecord" parameterType="com.xue.entity.SuccessKill">
-       insert into success_killed(seckill_id,user_id,state,create_time) values(#{seckillId},#{userId},#{state},SYSDATE())
+       insert into success_killed(seckill_id,user_id,state) values(#{seckill_id},#{user_id},#{state})
    </insert>
 </mapper>
